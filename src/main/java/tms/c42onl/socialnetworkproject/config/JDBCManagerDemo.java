@@ -8,22 +8,16 @@ import java.sql.SQLException;
 public class JDBCManagerDemo {
 
     private final JDBCManager jdbcManager;
-    private final ConnectionProvider provider;
 
-    public JDBCManagerDemo(JDBCManager jdbcManager, ConnectionProvider provider) {
-        this.jdbcManager = jdbcManager;
-        this.provider = provider;
+    public JDBCManagerDemo() {
+        this.jdbcManager = new JDBCManager();
     }
 
     public void testJDBCConnection() throws SQLException {
         String sql = "SELECT * FROM users";
-
-        try(Connection connection = provider.getConnection();
+        try(Connection connection = ConnectionProvider.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("username"));
-            }
         }
 
     }
